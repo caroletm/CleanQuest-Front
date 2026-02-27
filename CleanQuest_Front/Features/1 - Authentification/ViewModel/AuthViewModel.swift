@@ -18,5 +18,16 @@ class AuthViewModel{
     init(userVM : UserViewModel) {
         self.userVM = userVM
     }
+    
+    //MARK: - Etats d'affichage
+    
+    var showSplash : Bool = true
+    var showLogin : Bool = true
+    var showSignIn : Bool = true
+    var showOnboarding : Bool = true
+    
+    //MARK: - Etats d'authentification
+    
+    var isAuthenticated : Bool = false
         
 }

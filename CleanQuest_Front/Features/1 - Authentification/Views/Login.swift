@@ -10,6 +10,8 @@ import SwiftUI
 struct Login : View {
     
     @Environment(UserViewModel.self) var userVM
+    @Environment(NavigationViewModel.self) var navVM
+    @Environment(AuthViewModel.self) var authVM
     
     var body: some View {
         
@@ -41,8 +43,9 @@ struct Login : View {
                 
                 HStack{
                     Spacer()
+                    
                     Button {
-                        //
+                        navVM.path.append(AppRoute.forgotPassword)
                     }label:{
                         Text("Mot de passe oublié ?")
                             .foregroundStyle(Color(.black))
@@ -62,7 +65,10 @@ struct Login : View {
             }
             
             SecondaryButton(text: "Pas de compte ?", width: 185, height: 50) {
-                //
+                withAnimation {
+                    authVM.showSignIn = true
+                    authVM.showLogin = false
+                }
             }
             
             Spacer()
@@ -76,4 +82,6 @@ struct Login : View {
     let userVM = UserViewModel()
     Login()
         .environment(userVM)
+        .environment(NavigationViewModel())
+        .environment(AuthViewModel(userVM: userVM))
 }

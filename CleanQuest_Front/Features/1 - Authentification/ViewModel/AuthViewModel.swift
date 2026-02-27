@@ -24,10 +24,13 @@ class AuthViewModel{
     var showSplash : Bool = true
     var showLogin : Bool = true
     var showSignIn : Bool = true
-    var showOnboarding : Bool = true
+    
+    var showOnboarding : Bool = false
+    var onboardingIndex = 0
     
     //MARK: - Etats d'authentification
     
     var isAuthenticated : Bool = false
+    var emailForgottenPassword : String = ""
         
 }

@@ -10,6 +10,8 @@ import SwiftUI
 struct SignIn : View {
     
     @Environment(UserViewModel.self) var userVM
+    @Environment(AuthViewModel.self) var authVM
+    @Environment(NavigationViewModel.self) var navVM
     
     var body: some View {
         
@@ -24,6 +26,7 @@ struct SignIn : View {
                 .font(.custom("Parkinsans-Bold", size: 24))
             Text("La bataille du propre")
                 .font(.custom("Parkinsans-Regular", size: 14))
+                .padding(.bottom, 30)
             
             Spacer()
             
@@ -67,11 +70,14 @@ struct SignIn : View {
             
             
             PrimaryButton(text: "Se connecter", width: 185, height: 50) {
-                //
+                navVM.path.append(AppRoute.forgotPassword)
             }
             
-            SecondaryButton(text: "Pas de compte ?", width: 185, height: 50) {
-                //
+            SecondaryButton(text: "Déjà un compte ?", width: 185, height: 50) {
+                withAnimation {
+                    authVM.showSignIn = false
+                    authVM.showLogin = true
+                }
             }
             
             Spacer()
@@ -85,5 +91,7 @@ struct SignIn : View {
     let userVM = UserViewModel()
     SignIn()
         .environment(userVM)
+        .environment(AuthViewModel(userVM: userVM))
+        .environment(NavigationViewModel())
 
 }

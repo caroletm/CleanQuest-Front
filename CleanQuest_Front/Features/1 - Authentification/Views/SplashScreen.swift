@@ -9,10 +9,11 @@ import SwiftUI
 
 struct SplashScreen: View {
     
-    @State var isOnboardingPresented: Bool = false
-    @State private var onboardingIndex = 0
+    @Environment(AuthViewModel.self) var authVM
     
     var body: some View {
+        
+        @Bindable var authVM = authVM
         
         VStack {
             Spacer()
@@ -26,18 +27,20 @@ struct SplashScreen: View {
                 .font(.custom("Parkinsans-Regular", size: 14))
             Spacer()
             PrimaryButton(text: "Commencer", width: 185, height: 50) {
-                onboardingIndex = 0
-                isOnboardingPresented = true
+                authVM.onboardingIndex = 0
+                authVM.showOnboarding = true
             }
             Spacer()
         }
-        .sheet(isPresented: $isOnboardingPresented) {
-            OnboardingModal(currentIndex: $onboardingIndex)
+        .sheet(isPresented: $authVM.showOnboarding) {
+            OnboardingModal(currentIndex: $authVM.onboardingIndex)
             .presentationDetents([.medium])
         }
     }
 }
 
 #Preview {
+    let userVM = UserViewModel()
     SplashScreen()
+        .environment(AuthViewModel(userVM: userVM))
 }

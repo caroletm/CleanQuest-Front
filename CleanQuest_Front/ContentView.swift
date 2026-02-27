@@ -26,7 +26,16 @@ struct ContentView: View {
         ZStack{
             NavigationStack (path : $navigationVM.path) {
                 Group {
-                    SplashScreen()
+                    
+                    if authVM.isAuthenticated {
+                        EmptyView()
+                    }else if authVM.showSplash {
+                        SplashScreen()
+                    }else if authVM.showLogin {
+                        Login()
+                    }else if authVM.showSignIn {
+                        SignIn()
+                    }
                 }
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
@@ -36,11 +45,14 @@ struct ContentView: View {
                         SignIn()
                     case .createProfile:
                         CreateProfile()
+                    case .forgotPassword:
+                        ForgottenPasswordScreen()
                     }
                 }
             }
             .environment(userVM)
             .environment(navigationVM)
+            .environment(authVM)
         }
     }
 }

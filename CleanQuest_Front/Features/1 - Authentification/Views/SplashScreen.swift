@@ -15,6 +15,7 @@ struct SplashScreen: View {
         
         @Bindable var authVM = authVM
         
+        
         VStack {
             Spacer()
             Image(.mainHouse)
@@ -34,7 +35,7 @@ struct SplashScreen: View {
         }
         .sheet(isPresented: $authVM.showOnboarding) {
             OnboardingModal(currentIndex: $authVM.onboardingIndex)
-            .presentationDetents([.medium])
+                .presentationDetents([.medium])
         }
     }
 }

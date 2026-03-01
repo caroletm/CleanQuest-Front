@@ -16,6 +16,7 @@ struct ForgottenPasswordScreen: View {
         
         @Bindable var authVM = authVM
         
+        
         VStack {
             HStack {
                 Text("Mot de passe oublié ?")

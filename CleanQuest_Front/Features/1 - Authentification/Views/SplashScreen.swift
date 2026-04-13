@@ -15,27 +15,31 @@ struct SplashScreen: View {
         
         @Bindable var authVM = authVM
         
-        
-        VStack {
-            Spacer()
-            Image(.mainHouse)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 82, height: 82)
-            Text("CleanQuest")
-                .font(.custom("Parkinsans-Bold", size: 24))
-            Text("La bataille du propre")
-                .font(.custom("Parkinsans-Regular", size: 14))
-            Spacer()
-            PrimaryButton(text: "Commencer", width: 185, height: 50) {
-                authVM.onboardingIndex = 0
-                authVM.showOnboarding = true
+
+        ZStack {
+            Color.white
+//            Color.lightYellow100.ignoresSafeArea().opacity(0.3)
+            VStack {
+                Spacer()
+                Image(.maisonCleanQuest)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 82, height: 82)
+                Text("CleanQuest")
+                    .font(.custom("Parkinsans-Bold", size: 24))
+                Text("La bataille du propre")
+                    .font(.custom("Parkinsans-Regular", size: 14))
+                Spacer()
+                PrimaryButton(text: "Commencer", width: 185, height: 50) {
+                    authVM.onboardingIndex = 0
+                    authVM.showOnboarding = true
+                }
+                Spacer()
             }
-            Spacer()
-        }
-        .sheet(isPresented: $authVM.showOnboarding) {
-            OnboardingModal(currentIndex: $authVM.onboardingIndex)
-                .presentationDetents([.medium])
+            .sheet(isPresented: $authVM.showOnboarding) {
+                OnboardingModal(currentIndex: $authVM.onboardingIndex)
+                    .presentationDetents([.medium])
+            }
         }
     }
 }

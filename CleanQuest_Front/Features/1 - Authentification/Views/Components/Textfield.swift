@@ -10,6 +10,7 @@ import SwiftUI
 struct Textfield : View {
     
     @Binding var text: String
+    
     var placeholder : String
     
     var body: some View {

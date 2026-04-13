@@ -16,11 +16,12 @@ struct SignIn : View {
     var body: some View {
         
         @Bindable var userVM = userVM
+        @Bindable var authVM = authVM
         
         
         ScrollView{
             VStack {
-                Image(.mainHouse)
+                Image(.maisonCleanQuest)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 82, height: 82)
@@ -47,12 +48,12 @@ struct SignIn : View {
                     Text("Mot de passe")
                         .font(.custom("Parkinsans-SemiBold", size: 16))
                     
-                    SecurefieldPassword(text: $userVM.password, isPasswordVisible: $userVM.isPasswordVisible)
+                    TextfieldPassword(text: $userVM.password, isPasswordVisible: $authVM.isPasswordVisible, placeholder: "mot de passe")
                     
                     Text("Confirmer le mot de passe")
                         .font(.custom("Parkinsans-SemiBold", size: 16))
                     
-                    SecurefieldPassword(text: $userVM.passwordConfirm, isPasswordVisible: $userVM.isPasswordConfirmVisible)
+                    TextfieldPassword(text: $userVM.passwordConfirm, isPasswordVisible : $authVM.isPasswordConfirmVisible, placeholder: "mot de passe")
                     
                     HStack{
                         Spacer()

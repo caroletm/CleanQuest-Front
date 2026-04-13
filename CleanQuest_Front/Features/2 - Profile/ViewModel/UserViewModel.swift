@@ -20,8 +20,7 @@ class UserViewModel {
     var email: String = ""
     var password: String = ""
     var passwordConfirm : String = ""
-    var isPasswordVisible : Bool = false
-    var isPasswordConfirmVisible : Bool = false
+
     
     var currentStep: CreateProfileStep = .name
     var selectedColor : Color = .lightGrey100

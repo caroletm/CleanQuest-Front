@@ -15,12 +15,12 @@ struct Login : View {
     
     var body: some View {
         
+        @Bindable var authVM = authVM
         @Bindable var userVM = userVM
         
-    
             VStack {
                 Spacer()
-                Image(.mainHouse)
+                Image(.maisonCleanQuest)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 82, height: 82)
@@ -40,7 +40,7 @@ struct Login : View {
                     Text("Mot de passe")
                         .font(.custom("Parkinsans-SemiBold", size: 16))
                     
-                    SecurefieldPassword(text: $userVM.password, isPasswordVisible: $userVM.isPasswordVisible)
+                    TextfieldPassword(text: $userVM.password, isPasswordVisible: $authVM.isPasswordVisible, placeholder: "mot de passe")
                     
                     HStack{
                         Spacer()

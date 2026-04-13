@@ -10,7 +10,7 @@ import Foundation
 final class APIService {
     static let shared = APIService()
     
-    let baseURL : String = "https://api.cleanQuest.cloud"
+    let baseURL : String = "http://localhost:8080"
     
     private init() {}
 

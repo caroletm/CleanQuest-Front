@@ -47,7 +47,5 @@ struct TextfieldPassword : View {
 }
 
 #Preview {
-    let userVM = UserViewModel()
     TextfieldPassword(text: .constant("email"), isPasswordVisible: .constant(false), placeholder: "email")
-
 }

@@ -70,10 +70,8 @@ struct SignIn : View {
                 }
                 .padding(.horizontal)
                 
-                
-                
                 PrimaryButton(text: "Se connecter", width: 185, height: 50) {
-                    navVM.path.append(AppRoute.forgotPassword)
+                    Task { await authVM.signUp()}
                 }
                 
                 SecondaryButton(text: "Déjà un compte ?", width: 185, height: 50) {

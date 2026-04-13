@@ -24,7 +24,6 @@ struct UserDTO: Codable {
     var id: UUID?
     var name: String
     var email: String
-    var telephone: String
 }
 
 //signup
@@ -32,5 +31,4 @@ struct UserCreateDTO: Codable {
     var name: String
     var email: String
     var password: String
-    var telephone: String
 }

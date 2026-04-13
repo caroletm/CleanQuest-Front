@@ -41,8 +41,8 @@ final class UserService {
     }
     
     // Inscription
-    func signUp(name: String, email: String, password : String, telephone: String) async throws -> UserDTO {
-        let body = UserCreateDTO(name: name, email: email, password: password, telephone: telephone)
+    func signUp(name: String, email: String, password : String) async throws -> UserDTO {
+        let body = UserCreateDTO(name: name, email: email, password: password )
         return try await api.post("/users", body: body)
     }
     

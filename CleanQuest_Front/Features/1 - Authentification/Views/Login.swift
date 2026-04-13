@@ -55,13 +55,20 @@ struct Login : View {
                         }
                     }
                     .padding()
+                    
+                    if let errorMessage = authVM.errorMessage {
+                        Text(errorMessage)
+                            .padding(10)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.red)
+                    }
                 }
                 .padding(.horizontal)
                 
                 Spacer()
                 
                 PrimaryButton(text: "Se connecter", width: 185, height: 50) {
-                    //
+                    Task { await authVM.signIn()}
                 }
                 
                 SecondaryButton(text: "Pas de compte ?", width: 185, height: 50) {

@@ -93,5 +93,138 @@ class AuthViewModel{
         }
  
     }
+    
+    // MARK: - Inscription utilisateur
+    // Crée un nouveau compte utilisateur avec validation des champs.
+    // Redirige vers l'écran de connexion en cas de succès.
+    
+    func signUp() async {
+        guard !userVM.email.isEmpty, !userVM.password.isEmpty, !userVM.nom.isEmpty else {
+            errorMessage = "Tous les champs doivent être remplis"
+            return
+        }
+        guard userVM.email.contains("@") && userVM.email.contains(".") else {
+            errorMessage = "Email invalide"
+            return
+        }
+        guard userVM.password.count >= 8 else {
+            errorMessage = "Le mot de passe doit contenir au moins 8 caractères"
+            return
+        }
+        
+        guard userVM.password == userVM.passwordConfirm, !userVM.passwordConfirm.isEmpty else {
+            errorMessage = "Les mots de passe ne sont pas identiques"
+            return
+        }
+        
+        isLoading = true
+           defer { isLoading = false }
+        errorMessage = nil
+        
+        do {
+            // Création du user
+            
+//            func signUp(name: String, email: String, password : String, telephone: String)
+            let user = try await userService.signUp(
+                name: userVM.nom,
+                email: userVM.email,
+                password: userVM.password
+            )
+            
+            print("Inscription réussie pour: \(user.name)")
+            
+            // Login automatique
+            let token = try await userService.login(email: userVM.email, motDePasse: userVM.password)
+            authToken = token
+            UserDefaults.standard.set(token, forKey: tokenKey)
+            
+            // Charger le profil
+            await loadUserProfile()
+            
+            // Vérifier première connexion
+//            checkFirstConnection()
+//            showLogin = false
+//            showSignUp = false
+            
+            // Réinitialiser le mot de passe
+            userVM.password = ""
+            userVM.passwordConfirm = ""
+            errorMessage = nil
+            
+        } catch {
+            errorMessage = "Erreur lors de l'inscription. Email peut-être déjà utilisé."
+            print("Erreur d'inscription: \(error)")
+        }
+    }
+    
+    // MARK: - Chargement du profil utilisateur
+    /// Charge le profil utilisateur à partir du token JWT stocké.
+    /// Si le token est invalide ou expiré, l'utilisateur est déconnecté.
+   
+    @MainActor
+    func loadUserProfile() async {
+        guard let token = authToken else {
+            isAuthenticated = false
+            return
+        }
+        isLoading = true
+        
+        do {
+            currentUser = try await userService.getProfile(token: token)
+            isAuthenticated = true
+//            showLogin = false
+//            showSignUp = false
+            print("Profil chargé: \(currentUser?.name ?? "Unknown")")
+        } catch {
+            // Token invalide ou expiré
+            print("Token invalide ou expiré")
+            logout()
+        }
+
+        isLoading = false
+    }
+    
+    // MARK: - Déconnexion utilisateur
+    /// Supprime le token et réinitialise l’état d’authentification.
+    @MainActor
+    func logout() {
+        // Clear le token
+        authToken = nil
+        currentUser = nil
+        isAuthenticated = false
+        UserDefaults.standard.removeObject(forKey: tokenKey)
+        
+        // Réinitialise les champs
+        userVM.email = ""
+        userVM.password = ""
+        userVM.passwordConfirm = ""
+        userVM.nom = ""
+        errorMessage = nil
+        
+        // Retour à la landing page
+        showLogin = true
+//        showSignUp = false
+        
+        print(" Déconnexion réussie")
+    }
+    
+    // MARK: - Suppression Compte utilisateur
+    
+    @MainActor
+    func deleteAccount() async {
+       guard let userId = currentUser!.id else { return }
+        do {
+            try await userService.deleteAccount(id: userId)
+            logout()
+        } catch {
+            print("Erreur lors de la suppression du compte")
+        }
+    }
+    
+    // MARK: - Réinitialisation des erreurs
+    /// Supprime le message d’erreur affiché.
+    func clearError() {
+        errorMessage = nil
+    }
         
 }

@@ -20,12 +20,35 @@ class UserViewModel {
     var email: String = ""
     var password: String = ""
     var passwordConfirm : String = ""
-    var isPasswordVisible : Bool = false
-    var isPasswordConfirmVisible : Bool = false
+
     
     var currentStep: CreateProfileStep = .name
-    var selectedColor : Color = .lightGrey100
+    var selectedColor : Color? = nil
     var pseudo: String = ""
-    var selectedAvatar: ImageResource = .avatar1
+    var selectedAvatar: ImageResource? = nil
+    
+    //MARK: - Onboarding
+    
+    func nextStep() {
+        let step = CreateProfileStep.allCases
+        
+        if let i = step.firstIndex(of: currentStep),
+           i < step.count - 1 {
+            currentStep = step[i + 1]
+        }
+    }
+    
+    func previousStep() {
+        let step = CreateProfileStep.allCases
+        
+        if let i = step.firstIndex(of: currentStep),
+           i > 0 {
+            currentStep = step[i - 1]
+        }
+    }
+    
+    //MARK: - Set name and
+    
+    
     
 }

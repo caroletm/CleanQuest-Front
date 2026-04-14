@@ -10,6 +10,7 @@ import SwiftUI
 struct CreateProfile: View {
     
     @Environment(UserViewModel.self) var userVM
+    @Environment(NavigationViewModel.self) var navVM
 
     var body: some View {
         
@@ -21,20 +22,26 @@ struct CreateProfile: View {
                 Text("Nouveau profil")
                     .font(.custom("Parkinsans-Bold", size: 28))
                 Spacer()
-                SmallCircleButton(imageSystemName: "gear") {}
+                SmallCircleButton(imageSystemName: "gear") {
+                    navVM.path.append(AppRoute.settings)
+                }
             }
             .padding()
             
-            Carrousel(pseudo: $userVM.pseudo, selectedColor: $userVM.selectedColor, currentStep: $userVM.currentStep, selectedAvatar: $userVM.selectedAvatar)
+            Carrousel(
+                pseudo: $userVM.pseudo,
+                selectedColor: $userVM.selectedColor,
+                selectedAvatar: $userVM.selectedAvatar,
+                currentStep: $userVM.currentStep)
                 .padding(20)
             
             Spacer()
 
-            PrimaryButton(text: "Suivant", width: 185, height: 50) {
-                //
+            PrimaryButton(text: "Suivant", width: 125, height: 50) {
+                userVM.nextStep()
             }
-            SecondaryButton(text: "Retour", width: 185, height: 50) {
-                //
+            SecondaryButton(text: "Retour", width: 125, height: 50) {
+                userVM.previousStep()
             }
         }
     }
@@ -44,4 +51,6 @@ struct CreateProfile: View {
     let userVM = UserViewModel()
     CreateProfile()
         .environment(userVM)
+        .environment(NavigationViewModel())
+       
 }

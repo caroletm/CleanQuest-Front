@@ -1,5 +1,5 @@
 //
-//  SecurefieldPassword.swift
+//  TextfieldEmail.swift
 //  CleanQuest
 //
 //  Created by caroletm on 25/02/2026.
@@ -7,20 +7,26 @@
 
 import SwiftUI
 
-struct SecurefieldPassword : View {
+struct TextfieldPassword : View {
     
     @Binding var text: String
-    @Binding var isPasswordVisible : Bool
+    @Binding var isPasswordVisible: Bool
+    
+    var placeholder : String
     
     var body: some View {
         
         HStack {
 
-            SecureField("mot de passe", text: $text)
-                .padding(5)
-                .textContentType(.emailAddress)
-                .autocapitalization(.none)
-                .keyboardType(.emailAddress)
+            if isPasswordVisible {
+                TextField(placeholder, text: $text)
+                    .padding(5)
+                    .autocapitalization(.none)
+            } else {
+                SecureField(placeholder, text: $text)
+                    .padding(5)
+                    .autocapitalization(.none)
+            }
             
             Button {
                 isPasswordVisible.toggle()
@@ -41,5 +47,5 @@ struct SecurefieldPassword : View {
 }
 
 #Preview {
-    SecurefieldPassword(text: .constant("mot de passe"), isPasswordVisible: .constant(false))
+    TextfieldPassword(text: .constant("email"), isPasswordVisible: .constant(false), placeholder: "email")
 }

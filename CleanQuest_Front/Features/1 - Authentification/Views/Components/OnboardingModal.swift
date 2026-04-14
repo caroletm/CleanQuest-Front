@@ -9,6 +9,9 @@ import SwiftUI
 
 struct OnboardingModal: View {
     
+    @Environment(AuthViewModel.self) var authVM
+    @Environment(NavigationViewModel.self) var navVM
+    
     @Binding var currentIndex: Int
     @Environment(\.dismiss) private var dismiss
     
@@ -44,10 +47,11 @@ struct OnboardingModal: View {
                                 .foregroundStyle(Color.black)
                         }
                     }
-             
+                    Spacer()
                     Text(onboardingStep.title)
                         .font(.custom("Parkinsans-SemiBold", size: 24))
-                }
+                    Spacer()
+                }.padding(.horizontal, 30)
                 
                 Image(onboardingStep.image)
                     .resizable()
@@ -66,6 +70,11 @@ struct OnboardingModal: View {
                         currentIndex += 1
                     } else {
                         dismiss()
+                        withAnimation {
+                            authVM.showOnboarding = false
+                            authVM.showSplash = false
+                            authVM.showLogin = true
+                        }
                     }
                 }
                 
@@ -75,5 +84,9 @@ struct OnboardingModal: View {
 }
 
 #Preview {
-    OnboardingModal(currentIndex: .constant(0))
+    let userVM = UserViewModel()
+    OnboardingModal(currentIndex: .constant(1))
+        .environment(AuthViewModel(userVM: userVM))
+        .environment(NavigationViewModel())
+    
 }

@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var navigationVM = NavigationViewModel()
     @State private var authVM: AuthViewModel
     @State private var userVM: UserViewModel
+    @State private var foyerVM = FoyerViewModel()
     
     init() {
         
@@ -26,7 +27,21 @@ struct ContentView: View {
         ZStack{
             NavigationStack (path : $navigationVM.path) {
                 Group {
-                    SplashScreen()
+                    
+                    if authVM.isAuthenticated {
+                        if authVM.firstConnection {
+                            FoyerMenu()
+                        }else{
+                            EmptyView()
+                        }
+                       
+                    }else if authVM.showSplash {
+                        SplashScreen()
+                    }else if authVM.showLogin {
+                        Login()
+                    }else if authVM.showSignIn {
+                        SignIn()
+                    }
                 }
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
@@ -36,11 +51,24 @@ struct ContentView: View {
                         SignIn()
                     case .createProfile:
                         CreateProfile()
+                    case .forgotPassword:
+                        ForgottenPasswordScreen()
+                    case .settings:
+                        Settings()
+                    case .foyerMenu:
+                        FoyerMenu()
+                    case .joinFoyer:
+                        JoinFoyer()
+                    case .createFoyer:
+                        CreateFoyer()
+                    
                     }
                 }
             }
             .environment(userVM)
             .environment(navigationVM)
+            .environment(authVM)
+            .environment(foyerVM)
         }
     }
 }
@@ -51,4 +79,5 @@ struct ContentView: View {
         .environment(NavigationViewModel())
         .environment(userVM)
         .environment(AuthViewModel(userVM : userVM))
+        .environment(FoyerViewModel())
 }

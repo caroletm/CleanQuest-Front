@@ -35,7 +35,7 @@ class AuthViewModel{
     
     var isAuthenticated : Bool = false
     var emailForgottenPassword : String = ""
-    var firstConnection: Bool = false
+    var firstConnection: Bool = true
     var currentUser : UserDTO?
     var authToken: String?
     var errorMessage: String?
@@ -71,13 +71,11 @@ class AuthViewModel{
             if currentUser?.name != nil {
                 userVM.nom = currentUser!.name
             }
-
+            
             // Vérifier première connexion
-//            checkFirstConnection()
-//            userVM.update(from: currentUser!)
-
+            checkFirstConnection()
             showLogin = false
-//            showSignUp = false
+            showSignIn = false
             
             // Réinitialiser le mot de passe local
             userVM.password = ""
@@ -91,7 +89,7 @@ class AuthViewModel{
             errorMessage = "Erreur de connexion. Vérifiez votre connexion."
             print("Erreur: \(error)")
         }
- 
+        
     }
     
     // MARK: - Inscription utilisateur
@@ -118,13 +116,12 @@ class AuthViewModel{
         }
         
         isLoading = true
-           defer { isLoading = false }
+        defer { isLoading = false }
         errorMessage = nil
         
         do {
             // Création du user
             
-//            func signUp(name: String, email: String, password : String, telephone: String)
             let user = try await userService.signUp(
                 name: userVM.nom,
                 email: userVM.email,
@@ -142,9 +139,9 @@ class AuthViewModel{
             await loadUserProfile()
             
             // Vérifier première connexion
-//            checkFirstConnection()
-//            showLogin = false
-//            showSignUp = false
+            checkFirstConnection()
+            showLogin = false
+            showSignIn = false
             
             // Réinitialiser le mot de passe
             userVM.password = ""
@@ -160,7 +157,7 @@ class AuthViewModel{
     // MARK: - Chargement du profil utilisateur
     /// Charge le profil utilisateur à partir du token JWT stocké.
     /// Si le token est invalide ou expiré, l'utilisateur est déconnecté.
-   
+    
     @MainActor
     func loadUserProfile() async {
         guard let token = authToken else {
@@ -172,15 +169,15 @@ class AuthViewModel{
         do {
             currentUser = try await userService.getProfile(token: token)
             isAuthenticated = true
-//            showLogin = false
-//            showSignUp = false
+            //            showLogin = false
+            //            showSignUp = false
             print("Profil chargé: \(currentUser?.name ?? "Unknown")")
         } catch {
             // Token invalide ou expiré
             print("Token invalide ou expiré")
             logout()
         }
-
+        
         isLoading = false
     }
     
@@ -203,7 +200,7 @@ class AuthViewModel{
         
         // Retour à la landing page
         showLogin = true
-//        showSignUp = false
+        //        showSignUp = false
         
         print(" Déconnexion réussie")
     }
@@ -212,7 +209,7 @@ class AuthViewModel{
     
     @MainActor
     func deleteAccount() async {
-       guard let userId = currentUser!.id else { return }
+        guard let userId = currentUser!.id else { return }
         do {
             try await userService.deleteAccount(id: userId)
             logout()
@@ -226,5 +223,14 @@ class AuthViewModel{
     func clearError() {
         errorMessage = nil
     }
-        
+    
+    // MARK: - Gestion de l'onboarding
+    
+    //    //Checker si c'est la 1ere connexion
+    func checkFirstConnection() {
+        guard let user = currentUser else { return }
+        firstConnection = user.firstConnection
+        showOnboarding = user.firstConnection
+    }
+    
 }

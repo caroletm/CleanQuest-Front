@@ -10,9 +10,9 @@ import SwiftUI
 struct Carrousel : View {
     
     @Binding var pseudo : String
-    @Binding var selectedColor : Color
+    @Binding var selectedColor : Color?
+    @Binding var selectedAvatar : ImageResource?
     @Binding var currentStep : CreateProfileStep
-    @Binding var selectedAvatar : ImageResource
     
     @ViewBuilder
     func stepView( for step: CreateProfileStep) -> some View {
@@ -27,22 +27,23 @@ struct Carrousel : View {
     }
     
     var body: some View {
-        
-        VStack {
-
-            TabView(selection: $currentStep) {
-                ForEach(CreateProfileStep.allCases, id: \.self) { step in
-                    stepView(for: step)
-                        .tag(step)
+        GeometryReader { geo in
+            VStack {
+                TabView(selection: $currentStep) {
+                    ForEach(CreateProfileStep.allCases, id: \.self) { step in
+                        stepView(for: step)
+                            .tag(step)
+                    }
                 }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            
-            HStack {
-                ForEach(CreateProfileStep.allCases, id: \.self) { step in
-                    Circle()
-                        .fill(step == currentStep ? Color.black : Color.lightGrey100)
-                        .frame(width: 8, height: 8)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: geo.size.height * 0.92)
+
+                HStack {
+                    ForEach(CreateProfileStep.allCases, id: \.self) { step in
+                        Circle()
+                            .fill(step == currentStep ? Color.black : Color.lightGrey100)
+                            .frame(width: 8, height: 8)
+                    }
                 }
             }
         }
@@ -50,5 +51,5 @@ struct Carrousel : View {
 }
 
 #Preview {
-    Carrousel(pseudo: .constant(""), selectedColor: .constant(.lightGreen100), currentStep: .constant(.name), selectedAvatar: .constant(.avatar1))
+    Carrousel(pseudo: .constant(""), selectedColor: .constant(.lightGreen100),  selectedAvatar: .constant(.avatar1), currentStep: .constant(.name))
 }

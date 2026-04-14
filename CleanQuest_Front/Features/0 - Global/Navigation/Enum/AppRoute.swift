@@ -12,5 +12,10 @@ enum AppRoute : Hashable {
     case signIn
     case createProfile
     case forgotPassword
+    case settings
+    case foyerMenu
+    case joinFoyer
+    case createFoyer
+    
     
 }

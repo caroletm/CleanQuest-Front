@@ -25,7 +25,7 @@ class UserViewModel {
     var currentStep: CreateProfileStep = .name
     var selectedColor : Color? = nil
     var pseudo: String = ""
-    var selectedAvatar: ImageResource? = nil
+    var selectedAvatar: String? = nil
     
     //MARK: - Onboarding
     

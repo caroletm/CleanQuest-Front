@@ -20,7 +20,7 @@ enum SettingsSection: CaseIterable {
 
     var items: [SettingsItem] {
         switch self {
-        case .general: return [.editProfile]
+        case .general: return [.editProfile, .manageFoyer]
         case .helpAndSupport: return [.faq, .contactUs]
         case .parameters: return [.notifications, .privacy, .terms, .deleteAccount]
         }
@@ -28,7 +28,7 @@ enum SettingsSection: CaseIterable {
 }
                 
 enum SettingsItem {
-    case editProfile, faq, contactUs, notifications, privacy, terms, deleteAccount
+    case editProfile, faq, contactUs, notifications, privacy, terms, deleteAccount, manageFoyer
 
     var title: String {
         switch self {
@@ -39,6 +39,7 @@ enum SettingsItem {
         case .privacy: return "Confidentialité"
         case .terms: return "Conditions Générales d'utilisation"
         case .deleteAccount: return "Supprimer mon compte"
+        case .manageFoyer : return "Gérer ses foyers"
         }
     }
     
@@ -51,6 +52,7 @@ enum SettingsItem {
         case .privacy: return nil
         case .terms: return nil
         case .deleteAccount: return nil
+        case .manageFoyer : return nil
         }
     }
 }

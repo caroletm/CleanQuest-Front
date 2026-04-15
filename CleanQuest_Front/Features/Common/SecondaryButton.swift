@@ -20,6 +20,10 @@ struct SecondaryButton : View {
             Text(text)
                 .foregroundColor(.black)
                 .font(.custom("Parkinsans-SemiBold", size: 16))
+                .frame(width: width, height: height)
+                .background(Color.white)
+                .clipShape(Capsule())
+               
         }
         .overlay{
             RoundedRectangle(cornerRadius: 50)
@@ -27,7 +31,6 @@ struct SecondaryButton : View {
                 .frame(width: width, height: height)
                 .foregroundColor(Color.black)
         }
-        .padding()
     }
 }
 

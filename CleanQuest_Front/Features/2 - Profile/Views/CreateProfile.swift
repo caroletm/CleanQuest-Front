@@ -11,6 +11,7 @@ struct CreateProfile: View {
     
     @Environment(UserViewModel.self) var userVM
     @Environment(NavigationViewModel.self) var navVM
+    @Environment(FoyerViewModel.self) var foyerVM
 
     var body: some View {
         
@@ -38,12 +39,27 @@ struct CreateProfile: View {
             Spacer()
 
             PrimaryButton(text: "Suivant", width: 125, height: 50) {
-                userVM.nextStep()
+                
+                if userVM.currentStep == CreateProfileStep.allCases.last {
+                    
+                    foyerVM.addNewMember(nom: userVM.pseudo, couleur: userVM.selectedColor , avatar: userVM.selectedAvatar, niveau: Niveau(rawValue: Niveau.debutant.rawValue) ?? .debutant, isGere: true, email: userVM.email)
+                    
+                    navVM.path.removeLast()
+                
+                }else {
+                    userVM.nextStep()
+                }
             }
             SecondaryButton(text: "Retour", width: 125, height: 50) {
-                userVM.previousStep()
+                
+                if let currentIndex = CreateProfileStep.allCases.firstIndex(of: userVM.currentStep), currentIndex > 0 {
+                    userVM.previousStep()
+                } else {
+                    navVM.path.removeLast()
+                }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -52,5 +68,6 @@ struct CreateProfile: View {
     CreateProfile()
         .environment(userVM)
         .environment(NavigationViewModel())
+        .environment(FoyerViewModel())
        
 }

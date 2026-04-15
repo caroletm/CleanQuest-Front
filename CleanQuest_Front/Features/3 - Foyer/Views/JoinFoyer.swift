@@ -47,19 +47,27 @@ struct JoinFoyer: View {
                             .stroke(style: StrokeStyle(lineWidth: 1))
                     }
                     .foregroundStyle(Color(.lightGrey200))
-            
+                
                 Spacer()
                 
                 HStack {
                     Spacer()
-                    PrimaryButton(text: "Rejoindre le foyer", width: 185, height : 50) {
-                        //
+                    VStack{
+                        
+                        PrimaryButton(text: "Rejoindre", width: 150, height : 50) {
+                            //
+                        }
+                        SecondaryButton(text: "Retour", width: 150, height : 50) {
+                            navVM.path.removeLast()
+                        }
+                        
                     }
                     Spacer()
                 }
             }
             .padding()
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

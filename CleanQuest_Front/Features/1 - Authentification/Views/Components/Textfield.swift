@@ -21,6 +21,8 @@ struct Textfield : View {
             .keyboardType(.emailAddress)
             .padding(.horizontal, 10)
             .padding(.vertical, 5)
+            .background(Color.white)
+            .clipShape(Capsule())
             .overlay {
                 RoundedRectangle(cornerRadius: 50)
                     .stroke(style: StrokeStyle(lineWidth: 1))

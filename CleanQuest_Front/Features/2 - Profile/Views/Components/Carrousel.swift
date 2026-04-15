@@ -11,7 +11,7 @@ struct Carrousel : View {
     
     @Binding var pseudo : String
     @Binding var selectedColor : Color?
-    @Binding var selectedAvatar : ImageResource?
+    @Binding var selectedAvatar : String?
     @Binding var currentStep : CreateProfileStep
     
     @ViewBuilder
@@ -51,5 +51,5 @@ struct Carrousel : View {
 }
 
 #Preview {
-    Carrousel(pseudo: .constant(""), selectedColor: .constant(.lightGreen100),  selectedAvatar: .constant(.avatar1), currentStep: .constant(.name))
+    Carrousel(pseudo: .constant(""), selectedColor: .constant(.lightGreen100),  selectedAvatar: .constant("avatar1"), currentStep: .constant(.name))
 }

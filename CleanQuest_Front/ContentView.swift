@@ -61,7 +61,6 @@ struct ContentView: View {
                         JoinFoyer()
                     case .createFoyer:
                         CreateFoyer()
-                    
                     }
                 }
             }

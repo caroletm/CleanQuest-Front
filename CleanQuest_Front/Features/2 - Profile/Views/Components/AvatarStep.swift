@@ -9,10 +9,10 @@ import SwiftUI
 
 struct AvatarStep: View {
     
-    var avatarImages : [ImageResource] = [.avatar1, .avatar2, .avatar3, .avatar4,.avatar5,.avatar6,.avatar7, . avatar8, .avatar9, .avatar10]
+    var avatarImages : [String] = ["avatar1", "avatar2", "avatar3", "avatar4","avatar5", "avatar6","avatar7", "avatar8", "avatar9", "avatar10"]
     @Binding var selectedColor : Color?
     @Binding var name : String
-    @Binding var selectedAvatar : ImageResource?
+    @Binding var selectedAvatar : String?
     
     var body: some View {
         GeometryReader { geo in
@@ -57,5 +57,5 @@ struct AvatarStep: View {
 }
 
 #Preview {
-    AvatarStep(selectedColor: .constant(.lightGrey100), name: .constant("Hello"), selectedAvatar: .constant(.avatar1))
+    AvatarStep(selectedColor: .constant(.lightGrey100), name: .constant("Hello"), selectedAvatar: .constant("avatar1"))
 }

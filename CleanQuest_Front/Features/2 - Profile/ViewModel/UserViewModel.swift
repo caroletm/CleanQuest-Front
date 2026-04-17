@@ -14,6 +14,9 @@ import Observation
 
 class UserViewModel {
     
+    var alertMessage: String = ""
+    var showErrorAlert: Bool = false
+    
     //MARK: - DataUser
     
     var nom : String = ""
@@ -46,9 +49,27 @@ class UserViewModel {
             currentStep = step[i - 1]
         }
     }
+
+    //MARK: - Creation du profil membre en tant que user
     
-    //MARK: - Set name and
-    
+    func isCreateProfileValid() -> Bool {
+        guard !pseudo.isEmpty else {
+            alertMessage = "Le pseudo est obligatoire."
+            showErrorAlert = true
+            return false
+        }
+        guard selectedAvatar != nil else {
+            alertMessage = "Veuillez choisir un avatar."
+            showErrorAlert = true
+            return false
+        }
+        guard selectedColor != nil else {
+            alertMessage = "Veuillez choisir une couleur."
+            showErrorAlert = true
+            return false
+        }
+        return true
+    }
     
     
 }

@@ -16,6 +16,6 @@ enum AppRoute : Hashable {
     case foyerMenu
     case joinFoyer
     case createFoyer
-    
+    case mesFoyers
     
 }

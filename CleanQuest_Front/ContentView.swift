@@ -61,6 +61,8 @@ struct ContentView: View {
                         JoinFoyer()
                     case .createFoyer:
                         CreateFoyer()
+                    case .mesFoyers:
+                        MesFoyers()
                     }
                 }
             }
@@ -68,6 +70,9 @@ struct ContentView: View {
             .environment(navigationVM)
             .environment(authVM)
             .environment(foyerVM)
+        }
+        .task {
+            await authVM.checkAutoLogin()
         }
     }
 }

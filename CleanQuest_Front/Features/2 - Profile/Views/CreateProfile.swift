@@ -19,14 +19,8 @@ struct CreateProfile: View {
         
         VStack {
             
-            HStack {
-                Text("Nouveau profil")
-                    .font(.custom("Parkinsans-Bold", size: 28))
-                Spacer()
-                SmallCircleButton(imageSystemName: "gear") {
-                    navVM.path.append(AppRoute.settings)
-                }
-            }
+            HeaderSimple(text: "Nouveau membre")
+            
             .padding()
             
             Carrousel(
@@ -42,9 +36,12 @@ struct CreateProfile: View {
                 
                 if userVM.currentStep == CreateProfileStep.allCases.last {
                     
-                    foyerVM.addNewMember(nom: userVM.pseudo, couleur: userVM.selectedColor , avatar: userVM.selectedAvatar, niveau: Niveau(rawValue: Niveau.debutant.rawValue) ?? .debutant, isGere: true, email: userVM.email)
-                    
-                    navVM.path.removeLast()
+                    if userVM.isCreateProfileValid() {
+                        
+                        foyerVM.addNewMember(nom: userVM.pseudo, couleur: userVM.selectedColor , avatar: userVM.selectedAvatar, niveau: Niveau(rawValue: Niveau.debutant.rawValue) ?? .debutant, isGere: true, email: userVM.email)
+                        
+                        navVM.path.removeLast()
+                    }
                 
                 }else {
                     userVM.nextStep()
@@ -58,6 +55,11 @@ struct CreateProfile: View {
                     navVM.path.removeLast()
                 }
             }
+        }
+        .alert("Champs manquants", isPresented: $userVM.showErrorAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(userVM.alertMessage)
         }
         .navigationBarBackButtonHidden(true)
     }

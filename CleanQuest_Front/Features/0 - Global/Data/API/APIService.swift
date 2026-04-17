@@ -8,6 +8,7 @@
 import Foundation
 
 final class APIService {
+    
     static let shared = APIService()
     
     let baseURL : String = "http://localhost:8080"
@@ -28,6 +29,12 @@ final class APIService {
                 }
 
         let (data, response) = try await URLSession.shared.data(for: request)
+        
+        // DEBUG temporaire
+        if let httpResponse = response as? HTTPURLResponse {
+            print("Status: \(httpResponse.statusCode)")
+            print("Body: \(String(data: data, encoding: .utf8) ?? "nil")")
+        }
         
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {

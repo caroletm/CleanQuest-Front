@@ -17,6 +17,7 @@ class AuthViewModel{
     
     init(userVM : UserViewModel) {
         self.userVM = userVM
+        self.authToken = UserDefaults.standard.string(forKey: tokenKey)
     }
     
     //MARK: - Etats d'affichage
@@ -63,6 +64,7 @@ class AuthViewModel{
             // Login et récupération du token
             let token = try await userService.login(email: userVM.email, motDePasse: userVM.password)
             authToken = token
+            print("token : \(authToken ?? "")")
             UserDefaults.standard.set(token, forKey: tokenKey)
             
             // Charger le profil utilisateur
@@ -172,6 +174,10 @@ class AuthViewModel{
             //            showLogin = false
             //            showSignUp = false
             print("Profil chargé: \(currentUser?.name ?? "Unknown")")
+            if let email = currentUser?.email {
+                userVM.email = email
+            }
+            
         } catch {
             // Token invalide ou expiré
             print("Token invalide ou expiré")
@@ -231,6 +237,17 @@ class AuthViewModel{
         guard let user = currentUser else { return }
         firstConnection = user.firstConnection
         showOnboarding = user.firstConnection
+    }
+    
+    // MARK: - Persistence des données
+    
+    func checkAutoLogin() async {
+        guard authToken != nil else {
+            showSplash = false
+            return
+        }
+        await loadUserProfile()
+        showSplash = false
     }
     
 }

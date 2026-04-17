@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-enum FoyerType: String, CaseIterable {
+enum FoyerType: String, CaseIterable, Codable {
     case coloc
     case couple
     case familleAvecEnfant

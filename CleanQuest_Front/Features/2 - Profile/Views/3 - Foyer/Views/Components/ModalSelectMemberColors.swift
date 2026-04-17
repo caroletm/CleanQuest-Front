@@ -56,7 +56,7 @@ struct ModalSelectMemberColors: View {
                                 .frame(width: 47, height: 47)
                                 .overlay(
                                     Circle()
-                                        .stroke(foyerVM.selectedCouleurMembre == couleur ? Color.black : Color.lightMauve200, lineWidth: foyerVM.selectedCouleurMembre == couleur ? 3 : 2)
+                                        .stroke( .black, lineWidth: foyerVM.selectedCouleurMembre == couleur ? 2 : 0.5)
                                 )
                         }
                     }

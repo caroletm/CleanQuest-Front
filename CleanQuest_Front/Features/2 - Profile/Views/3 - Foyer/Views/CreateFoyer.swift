@@ -103,7 +103,7 @@ struct CreateFoyer: View {
                                 
                             }else {
                                 MemberLine(nom: membre.nom, email: membre.email ?? "", couleur: membre.couleur ?? .lightGrey30, avatar: membre.avatar ?? "", info: membre.estGere ? "géré par \(userVM.nom)" : "invité", isGere: membre.estGere)
-                                }
+                            }
                             
                             Spacer()
                         }
@@ -112,7 +112,12 @@ struct CreateFoyer: View {
             }
             Spacer()
             
-            PrimaryButton(text: "Créer un foyer", width: 150, height: 50) {}
+            PrimaryButton(text: "Créer un foyer", width: 150, height: 50) {
+                
+                if foyerVM.isCreateFoyerValid() {
+                    foyerVM.showAlertBeforeFoyerCreation.toggle()
+                }
+            }
             SecondaryButton(text: "Retour", width: 150, height: 50) {
                 navVM.path.removeLast()
             }
@@ -122,6 +127,22 @@ struct CreateFoyer: View {
         .sheet(isPresented: $foyerVM.showAddMemberSheet) {
             AjouterMembreModal()
             .presentationDetents([.fraction(0.6)])}
+        .alert("Etes vous sur.e? ", isPresented: $foyerVM.showAlertBeforeFoyerCreation) {
+            Button("Annuler", role: .cancel) { }
+            Button("Créer", role: .destructive) {
+                Task {
+                    await foyerVM.createFoyer()
+                }
+            }
+        } message: {
+            Text("Vous êtes sur le point de créer votre foyer. Avez vous bien ajouté tous les participants?")
+                .multilineTextAlignment(.center)
+        }
+        .alert("Champs manquants", isPresented: $foyerVM.showErrorAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(foyerVM.alertMessage)
+        }
         
     }
 }

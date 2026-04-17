@@ -63,7 +63,7 @@ struct Settings: View {
         .alert("Se déconnecter", isPresented: $showLogOutAlert) {
             Button("Annuler", role: .cancel) { }
             Button("Se déconnecter", role: .destructive) {
-                navVM.path.removeLast()
+                navVM.path = NavigationPath()
                 authVM.logout()
             }
         } message: {

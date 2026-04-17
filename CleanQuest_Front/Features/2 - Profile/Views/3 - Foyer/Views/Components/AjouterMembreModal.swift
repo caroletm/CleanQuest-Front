@@ -59,19 +59,21 @@ struct AjouterMembreModal: View {
                         
                         PrimaryButton(text: "Envoyer une invitation", width: 220, height: 50) {
                             
-                            foyerVM.addNewMember(nom: foyerVM.nomMembre, couleur: foyerVM.selectedCouleurMembre ?? Color(.lightGrey100), avatar: foyerVM.selectedAvatarMembre ?? "", niveau: .debutant, isGere: false, email: foyerVM.emailMembre)
-                            
-                            foyerVM.clearForm()
-                            
-                            foyerVM.showAddMemberSheet.toggle()
+                            if foyerVM.isMembreFormValid(){
+                                foyerVM.addNewMember(nom: foyerVM.nomMembre, couleur: foyerVM.selectedCouleurMembre ?? Color(.lightGrey100), avatar: foyerVM.selectedAvatarMembre ?? "", niveau: .debutant, isGere: false, email: foyerVM.emailMembre)
+                                
+                                foyerVM.clearForm()
+                                
+                                foyerVM.showAddMemberSheet.toggle()
+                            }
                         }
                     } else {
                         
                         VStack{
                             
                             FormSection(title: "Son nom", text: $foyerVM.nomMembre, placeholder: "nom")
-                        
-                         
+                            
+                            
                             HStack {
                                 Text("Son avatar et sa couleur")
                                     .font(.custom("Parkinsans-SemiBold", size: 16))
@@ -109,11 +111,11 @@ struct AjouterMembreModal: View {
                             }
                             PrimaryButton(text: "Gérer ce membre", width: 220, height: 50) {
                                 
-                                foyerVM.addNewMember(nom: foyerVM.nomMembre, couleur: foyerVM.selectedCouleurMembre ?? Color(.lightGrey100), avatar: foyerVM.selectedAvatarMembre ?? "", niveau: .debutant, isGere: true, email: "")
-                                
-                                foyerVM.clearForm()
-                                
-                                foyerVM.showAddMemberSheet.toggle()
+                                if foyerVM.isMembreFormValid() {
+                                    foyerVM.addNewMember(nom: foyerVM.nomMembre, couleur: foyerVM.selectedCouleurMembre ?? Color(.lightGrey100), avatar: foyerVM.selectedAvatarMembre ?? "", niveau: .debutant, isGere: true, email: "")
+                                    foyerVM.clearForm()
+                                    foyerVM.showAddMemberSheet.toggle()
+                                }
                                 
                             }
                         }
@@ -125,6 +127,11 @@ struct AjouterMembreModal: View {
                 }
             }
             .padding()
+            .alert("Champs manquants", isPresented: $foyerVM.showErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(foyerVM.alertMessage)
+            }
         }
     }
 }

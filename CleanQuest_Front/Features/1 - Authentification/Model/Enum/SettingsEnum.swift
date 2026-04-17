@@ -45,14 +45,16 @@ enum SettingsItem {
     
     var route : AppRoute? {
         switch self {
-            case .editProfile: return nil
+        case .editProfile: return .createProfile
         case .faq: return nil
         case .contactUs: return nil
         case .notifications: return nil
         case .privacy: return nil
         case .terms: return nil
         case .deleteAccount: return nil
-        case .manageFoyer : return nil
+        case .manageFoyer : return .mesFoyers
         }
     }
 }
+
+
